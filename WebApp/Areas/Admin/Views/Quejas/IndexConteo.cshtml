@@ -1,0 +1,306 @@
+﻿@{
+    ViewData["Title"] = "Conteo de Quejas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Consultas / Conteo de Quejas</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Conteo de Quejas</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Conteo de Quejas
+                <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Fecha Del</label>
+                        <input class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="dtpFechaDel" autofocus />
+                    </div>
+                    <div class="form-group">
+                        <label>Comercial</label>
+                        <select asp-items="ViewBag.ListaComercio" class="form-control" id="ddlComercio"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Regi&#243;n</label>
+                        <select asp-items="ViewBag.ListaRegion" class="form-control" id="ddlRegion"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Municipio</label>
+                        <select asp-items="ViewBag.ListaMunicipio" class="form-control" id="ddlMunicipio"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Queja</label>
+                        <select asp-items="ViewBag.ListaTipoQueja" class="form-control" id="ddlTipoQueja"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optEstado" id="optTodos" value="0" checked>Todos
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optEstado" id="optInicial" value="1">Inicial
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optEstado" id="optProceso" value="2">En Proceso
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optEstado" id="optFinalizada" value="3">Finalizada
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optEstado" id="optRechazada" value="4">Rechazada
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Fecha Al</label>
+                        <input class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="dtpFechaAl" />
+                    </div>
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <select asp-items="ViewBag.ListaSucursal" class="form-control" id="ddlSucursal"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Departamento</label>
+                        <select asp-items="ViewBag.ListaDepartamento" class="form-control" id="ddlDepartamento"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicaci&#243;n</label>
+                        <select asp-items="ViewBag.ListaUbicacion" class="form-control" id="ddlUbicacion"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Conteo</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="0" value="0" checked>Todos
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="optConQuejas" value="1">Con Quejas
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="optSinQuejas" value="2">Sin Quejas
+                            </label>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary" id="cmdBuscar">Buscar</button>
+                            <button type="button" class="btn btn-primary" id="cmdExportarTabla">Exportar a Excel</button>
+                            <button type="reset" class="btn btn-default">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    @if (string.IsNullOrEmpty(ViewBag.Error) == false)
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> @ViewBag.Error </div>
+                    }
+                    <div id="dData"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="~/js/jquery.table2excel.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#ddlComercio').change(function () {
+                 if ($('#ddlComercio').val() != "Select") {
+                    $('#ddlSucursal').empty();
+                    var idComercio = $('#ddlComercio').val();
+                    var url = '@Url.Action("GetAllValueList","ComercioSucursales")' + "?idComercio=" + idComercio + "&valorVacio=true";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlSucursal").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlSucursal').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar las sucursales.");
+                        });
+                }
+             });
+
+            $('#ddlRegion').change(function () {
+                if ($('#ddlRegion').val() != "Select") {
+                    $('#ddlDepartamento').empty();
+                    $('#ddlMunicipio').empty();
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var url = '@Url.Action("GetAllValueList","Departamentos")' + "?idRegion=" + idRegion + "&valorVacio=true";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlDepartamento").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlDepartamento').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los departamentos.");
+                        });
+                }
+            });
+
+            $('#ddlDepartamento').change(function () {
+                if ($('#ddlDepartamento').val() != "Select") {
+                    $('#ddlMunicipio').empty();
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var idDepartamento = $('#ddlDepartamento').val();
+                    var url = '@Url.Action("GetAllValueList","Municipios")' + "?idRegion=" + idRegion + "&idDepartamento=" + idDepartamento + "&valorVacio=true";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlMunicipio").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlMunicipio').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los municipios.");
+                        });
+                }
+            });
+
+            $('#ddlMunicipio').change(function () {
+                if ($('#ddlDepartamento').val() != "Select") {
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var idDepartamento = $('#ddlDepartamento').val();
+                    var idMunicipio = $('#ddlMunicipio').val();
+                    var url = '@Url.Action("GetAllValueList","Ubicaciones")' + "?idRegion=" + idRegion + "&idDepartamento=" + idDepartamento + "&idMunicipio=" + idMunicipio + "&valorVacio=true";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlUbicacion").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlUbicacion').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar las ubicaciones.");
+                        });
+                }
+            });
+
+            $('#cmdBuscar').click(function () {
+                var fechaDel = $('#dtpFechaDel').val();
+                var fechaAl = $('#dtpFechaAl').val();
+                var idComercio = $('#ddlComercio').val();
+                var idSucursal = $('#ddlSucursal').val();
+                var idRegion = $('#ddlRegion').val();
+                var idDepartamento = $('#ddlDepartamento').val();
+                var idMunicipio = $('#ddlMunicipio').val();
+                var idUbicacion = $('#ddlUbicacion').val();
+                var idTipoQueja = $('#ddlTipoQueja').val();
+                var estado = 0;
+                if ($('#optInicial').is(":checked"))
+                    estado = 1;
+                if ($('#optProceso').is(":checked"))
+                    estado = 2;
+                if ($('#optFinalizada').is(":checked"))
+                    estado = 3;
+                if ($('#optRechazada').is(":checked"))
+                    estado = 4;
+                var tipoConteo = null;
+                if ($('#optConQuejas').is(":checked"))
+                    tipoConteo = true;
+                if ($('#optSinQuejas').is(":checked"))
+                    tipoConteo = false;
+                var id = fechaDel + "_" + fechaAl + "_" + idComercio + "_" + idSucursal + "_" + idRegion + "_" + idDepartamento + "_" + idMunicipio + "_" + idUbicacion + "_" + idTipoQueja + "_" + estado + "_" + tipoConteo;
+
+                var url = '@Url.Action("GetConteo")' + '?id=' + id;
+                var jqxhr = $.get(url, function (data) {
+                    $('#dData').html(data);
+                });
+                jqxhr.done(function (data) {
+                    $('#DataTable').DataTable();
+                    var data = JSON.parse('[' + $("#datos").val() + ']');
+                    CargarGrafca(data);
+                });
+                jqxhr.fail(function () {
+                    MostrarError("Error al cargar los datos.");
+                });
+            });
+
+            $('#cmdExportarTabla').click(function () {
+                $("#DataTable").table2excel({
+                    exclude: ".noExl",
+                    name: "Datos",
+                    filename: "Conteo de Quejas",
+                    fileext: ".xls",
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+            });
+        });
+
+        function CargarGrafca(datos) {
+            am4core.ready(function () {
+
+                // Asignando tema
+                am4core.useTheme(am4themes_animated);
+
+                // Declarando grafico y de donde tomarlo
+                var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+                // Indicando fuente de datos
+                chart.data = datos;
+
+                // Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "valor";
+                pieSeries.dataFields.category = "categoria";
+                pieSeries.slices.template.stroke = am4core.color("#fff");
+                pieSeries.slices.template.strokeOpacity = 1;
+
+                // Animacion Inicial
+                pieSeries.hiddenState.properties.opacity = 1;
+                pieSeries.hiddenState.properties.endAngle = -90;
+                pieSeries.hiddenState.properties.startAngle = -90;
+
+                chart.hiddenState.properties.radius = am4core.percent(0);
+
+                // Permitir exportar
+                chart.exporting.menu = new am4core.ExportMenu();
+
+            });
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApp</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><span>DIACO</span> Sitio Oficial</a>
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <div class="profile-sidebar">
+            <div class="profile-userpic">
+                <img src="~/images/profile-user.png" class="img-responsive" alt="">
+            </div>
+            <div class="profile-usertitle">
+                <div class="profile-usertitle-name">@User.Identity.Name</div>
+                <div class="profile-usertitle-status"><span class="indicator label-success"></span>En l&#237;nea</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="divider"></div>
+        <ul class="nav menu">
+            <li class="active"><a asp-area="Admin" asp-controller="Dashboards" asp-action="Index"><em class="fa fa-dashboard">&nbsp;</em>Inicio</a></li>
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-0">
+                        <em class="fa fa-lock">&nbsp;</em> Seguridad <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-0">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                                <span class="fa fa-group">&nbsp;</span> Roles
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Usuarios" asp-action="Index">
+                                <span class="fa fa-user">&nbsp;</span> Usuarios
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-1">
+                        <em class="fa fa-navicon">&nbsp;</em> Cat&#225;logos <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-1">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Regiones" asp-action="Index">
+                                <span class="fa fa-map">&nbsp;</span> Regiones
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Departamentos" asp-action="Index">
+                                <span class="fa fa-location-arrow">&nbsp;</span> Departamentos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Municipios" asp-action="Index">
+                                <span class="fa fa-thumb-tack">&nbsp;</span> Municipios
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Ubicaciones" asp-action="Index">
+                                <span class="fa fa-map-marker">&nbsp;</span> Ubicaciones
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-2">
+                        <em class="fa fa-adjust">&nbsp;</em> Comercios <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-2">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Comercios" asp-action="Index">
+                                <span class="fa fa-building">&nbsp;</span> Comercios
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-3">
+                        <em class="fa fa-book">&nbsp;</em> Quejas <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="QuejaTipos" asp-action="Index">
+                                <span class="fa fa-th-large">&nbsp;</span> Tipos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="QuejaEstados" asp-action="Index">
+                                <span class="fa fa-refresh">&nbsp;</span> Estados
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Quejas" asp-action="IndexPendientes" asp-route-limpiar="true">
+                                <span class="fa fa-arrow-right">&nbsp;</span> Seguimiento
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            @if (User.IsInRole("Supervisor"))
+            {
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-3">
+                        <em class="fa fa-book">&nbsp;</em> Quejas <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Quejas" asp-action="IndexPendientes" asp-route-limpiar="true">
+                                <span class="fa fa-arrow-right">&nbsp;</span> Seguimiento
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            @if (User.IsInRole("Administrador") || User.IsInRole("Supervisor") || User.IsInRole("Consultor"))
+            {
+                <li class="parent ">
+                    <a data-toggle="collapse" href="#sub-item-4">
+                        <em class="fa fa-search">&nbsp;</em> Consultas <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-4">
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Quejas" asp-action="IndexConteo">
+                                <span class="fa fa-list-ol">&nbsp;</span> Conteo de Quejas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Quejas" asp-action="IndexConteoVariado">
+                                <span class="fa fa-list-ol">&nbsp;</span> Conteo de Quejas Variado
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" asp-area="Admin" asp-controller="Quejas" asp-action="Index">
+                                <span class="fa fa-th-list">&nbsp;</span> Listado de Quejas
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            <li><a asp-area="Identity" asp-controller="Cuentas" asp-action="LogOut"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+        </ul>
+    </div><!--/.sidebar-->
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        @RenderBody()
+        <div class="row">
+            <div class="col-sm-12">
+                <img style="width:100%;" src="~/images/blueWallpaper.jpg">
+            </div>
+        </div><!--/.row-->
+    </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/sweetalert2.min.js"></script>
+    <script src="~/js/propios.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

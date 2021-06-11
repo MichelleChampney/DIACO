@@ -1,0 +1,96 @@
+﻿@model WebApp.Areas.Customer.Models.mQueja
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Creaci&#243;n de Quejas</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <form role="form" asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                            <div class="form-group">
+                                <label>Comercio</label>
+                                <select asp-for="Obj.IdComercio" class="form-control" asp-items="Model.ListaComercio" id="ddlComercio" autofocus></select>
+                                <span asp-validation-message="" asp-validation-for="Obj.IdComercio" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Sucursal</label>
+                                <select asp-for="Obj.IdSucursal" class="form-control" asp-items="Model.ListaSucursal" id="ddlSucursal"></select>
+                                <span asp-validation-message="" asp-validation-for="Obj.IdSucursal" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de Queja</label>
+                                <select asp-for="Obj.IdTipoQueja" class="form-control" asp-items="Model.ListaTipoQueja"></select>
+                                <span asp-validation-message="" asp-validation-for="Obj.IdTipoQueja" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>T&#237;tulo</label>
+                                <input asp-for="Obj.Titulo" class="form-control" placeholder="Titulo" autocomplete="off" />
+                                <span asp-validation-message="" asp-validation-for="Obj.Titulo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Queja</label>
+                                <textarea asp-for="Obj.Queja" class="form-control" placeholder="Queja" rows="6"></textarea>
+                                <span asp-validation-message="" asp-validation-for="Obj.Queja" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Petici&#243;n</label>
+                                <textarea asp-for="Obj.Peticion" class="form-control" placeholder="Peticion" rows="6"></textarea>
+                                <span asp-validation-message="" asp-validation-for="Obj.Peticion" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="reset" class="btn btn-default">Limpiar</button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-default">Cancelar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddlComercio').change(function () {
+                if ($('#ddlComercio').val() != "Select") {
+                    $('#ddlSucursal').empty();
+                    var idComercio = $('#ddlComercio').val();
+                    var url = '@Url.Action("GetAllValueList", "ComercioSucursales", new { area = "Admin" })' + "?idComercio=" + idComercio + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlSucursal").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlSucursal').change();
+                    })
+                    .fail(function (error) {
+                        MostrarError("Error al cargar las sucursales.");
+                    });
+                }
+            });
+             $('#cmdAgregarAnexo').click(function () {
+                var url = '@Url.Action("PostAnexo", "Quejas")';
+                 var jqxhr = $.post(url, $("#frmAnexo").serialize(), function () {
+                      LoadData("", '@Url.Action("Anexos")' + '/');
+                 })
+                 .fail(function (error) {
+                    MostrarError("Error al cargar el anexo.");
+                 });
+            });
+            $('#DataTable').DataTable();
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

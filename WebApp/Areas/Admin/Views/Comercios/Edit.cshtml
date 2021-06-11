@@ -1,0 +1,71 @@
+﻿@model Entities.eComercio
+
+@{
+    ViewData["Title"] = "Comercios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Comercios</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Edici&#243;n de Comercios</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos Generales</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form role="form" asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                        <input asp-for="Id" class="form-control" placeholder="Id" type="hidden" />
+                        <div class="form-group">
+                            <label>NIT</label>
+                            <input asp-for="NIT" class="form-control" placeholder="NIT" autofocus autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="NIT" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Nombre" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Raz&#243;n Social</label>
+                            <input asp-for="RazonSocial" class="form-control" placeholder="Razón Social" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="RazonSocial" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Tel&#233;fono</label>
+                            <input asp-for="Telefono" class="form-control" placeholder="Teléfono" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electr&#243;nico</label>
+                            <input asp-for="CorreoElectronico" class="form-control" placeholder="Correo Electrónico" autocomplete="off" type="email" />
+                            <span asp-validation-message="" asp-validation-for="CorreoElectronico" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-default">Reestablecer Valores</button>
+                        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

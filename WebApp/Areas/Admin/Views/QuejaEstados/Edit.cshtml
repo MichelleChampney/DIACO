@@ -1,0 +1,74 @@
+﻿@model WebApp.Areas.Admin.Models.mQuejaEstado
+
+@{
+    ViewData["Title"] = "Región";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Estados de Quejas</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Edici&#243;n de Estados de Quejas</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos Generales</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form role="form" asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                        <input asp-for="Obj.Id" class="form-control" placeholder="Id" type="hidden" />
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input asp-for="Obj.Nombre" class="form-control" placeholder="Nombre" autofocus autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Estado</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Obj.Inicial" type="checkbox">Inicial
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="EnProceso" type="checkbox">En Proceso
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Obj.Final" type="checkbox">Final
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Obj.Rechazado" type="checkbox">Rechazado
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-default">Reestablecer Valores</button>
+                        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

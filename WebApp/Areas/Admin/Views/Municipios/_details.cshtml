@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Entities.eCatalogo>
+
+<table id="DataTable" class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Edit","Municipios",new { id = item.Id })" })>Editar</a>
+                    <button class="btn btn-sm btn-danger" onclick="ValidarEliminar('@Url.Action("Delete","Municipios",new { id = item.Id })');">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

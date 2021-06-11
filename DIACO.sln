@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiRest", "WebApiRest\WebApiRest.csproj", "{DB83DA97-04A5-474C-A85B-C1A3FA643B46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{155C7F8A-E4A9-49A6-B421-00B5F5F16968}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{BEE403FF-758F-47A4-B562-92CFEF6C14EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB83DA97-04A5-474C-A85B-C1A3FA643B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB83DA97-04A5-474C-A85B-C1A3FA643B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB83DA97-04A5-474C-A85B-C1A3FA643B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB83DA97-04A5-474C-A85B-C1A3FA643B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155C7F8A-E4A9-49A6-B421-00B5F5F16968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155C7F8A-E4A9-49A6-B421-00B5F5F16968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155C7F8A-E4A9-49A6-B421-00B5F5F16968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155C7F8A-E4A9-49A6-B421-00B5F5F16968}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEE403FF-758F-47A4-B562-92CFEF6C14EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEE403FF-758F-47A4-B562-92CFEF6C14EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEE403FF-758F-47A4-B562-92CFEF6C14EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEE403FF-758F-47A4-B562-92CFEF6C14EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8559C4F3-4DFA-447D-8312-086D088F807E}
+	EndGlobalSection
+EndGlobal

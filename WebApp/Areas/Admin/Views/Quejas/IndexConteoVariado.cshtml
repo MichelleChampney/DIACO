@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Conteo de Quejas Variado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Consultas / Conteo de Quejas Variado</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Conteo de Quejas Variado</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Conteo de Quejas Variado
+                <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="col-md-1">A&#241;o</label>
+                        <input class="form-control text-right" type="number" value="@DateTime.Now.Year" min="0" step="1" id="txtAnio" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Tipo de Consulta</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConsulta" id="optRegion" value="0" checked>Regi&#243;n
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConsulta" id="optDepartamento" value="1">Departamento
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConsulta" id="optMunicipio" value="2">Municipio
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConsulta" id="optComercio" value="3">Comercio
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Conteo</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="0" value="0" checked>Todos
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="optConQuejas" value="1">Con Quejas
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optTipoConteo" id="optSinQuejas" value="2">Sin Quejas
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary" id="cmdBuscar">Buscar</button>
+                        <button type="button" class="btn btn-primary" id="cmdExportarTabla">Exportar a Excel</button>
+                        <button type="reset" class="btn btn-default">Limpiar</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    @if (string.IsNullOrEmpty(ViewBag.Error) == false)
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> @ViewBag.Error </div>
+                    }
+                    <div id="dData"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="~/js/jquery.table2excel.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#cmdBuscar').click(function () {
+                var anio = $('#txtAnio').val();
+                var tipoConteo = null;
+                if ($('#optConQuejas').is(":checked"))
+                    tipoConteo = true;
+                if ($('#optSinQuejas').is(":checked"))
+                    tipoConteo = false;
+                var tipoConsulta = "";
+                if ($('#optRegion').is(":checked"))
+                    tipoConsulta = "Region";
+                if ($('#optDepartamento').is(":checked"))
+                    tipoConsulta = "Departamento";
+                if ($('#optMunicipio').is(":checked"))
+                    tipoConsulta = "Municipio";
+                if ($('#optComercio').is(":checked"))
+                    tipoConsulta = "Comercio";
+                var id = anio + "_" + tipoConteo + "_" + tipoConsulta;
+
+                var url = '@Url.Action("GetConteoVariado")' + '?id=' + id;
+                var jqxhr = $.get(url, function (data) {
+                    $('#dData').html(data);
+                });
+                jqxhr.done(function (data) {
+                    $('#DataTable').DataTable();
+                    var data = JSON.parse('[' + $("#datos").val() + ']');
+                    CargarGrafca(data);
+                });
+                jqxhr.fail(function () {
+                    MostrarError("Error al cargar los datos.");
+                });
+            });
+
+            $('#cmdExportarTabla').click(function () {
+                $("#DataTable").table2excel({
+                    exclude: ".noExl",
+                    name: "Datos",
+                    filename: "Conteo Variado de Quejas",
+                    fileext: ".xls",
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+            });
+
+        });
+
+        function CargarGrafca(datos) {
+            am4core.ready(function () {
+
+                // Asignando tema
+                am4core.useTheme(am4themes_animated);
+
+                // Declarando grafico y de donde tomarlo
+                var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+                // Indicando fuente de datos
+                chart.data = datos;
+
+                // Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "valor";
+                pieSeries.dataFields.category = "categoria";
+                pieSeries.slices.template.stroke = am4core.color("#fff");
+                pieSeries.slices.template.strokeOpacity = 1;
+
+                // Animacion Inicial
+                pieSeries.hiddenState.properties.opacity = 1;
+                pieSeries.hiddenState.properties.endAngle = -90;
+                pieSeries.hiddenState.properties.startAngle = -90;
+
+                chart.hiddenState.properties.radius = am4core.percent(0);
+
+                // Permitir exportar
+                chart.exporting.menu = new am4core.ExportMenu();
+
+            });
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

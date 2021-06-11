@@ -1,0 +1,140 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>DIACO</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/mainstyles.css" rel="stylesheet" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+</head>
+<!-- body -->
+<body class="main-layout">
+    <!-- loader  -->
+    <div class="loader_bg">
+        <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
+    </div>
+    <!-- end loader -->
+    <!-- top -->
+    <!-- header -->
+    <header class="header-area">
+        <div class="left">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </div>
+        <div class="right">
+            <a asp-area="Identity" asp-controller="Cuentas" asp-action="Login"><i class="fa fa-user" aria-hidden="true"></i></a>
+        </div>
+        <div class="container">
+            <div class="row d_flex">
+                <div class="col-sm-3 logo_sm">
+                    <div class="logo">
+                        <a href="index.html"></a>
+                    </div>
+                </div>
+                <div class="col-lg-10 offset-lg-1 col-md-12 col-sm-9">
+                    <div class="navbar-area">
+                        <nav class="site-navbar">
+                            <ul>
+                                <li><a asp-area="Customer" asp-controller="Quejas" asp-action="Create">Ingresar Queja</a></li>
+                                <li><a asp-area="Customer" asp-controller="Quejas" asp-action="Index">Consultar Queja</a></li>
+                            </ul>
+                            <button class="nav-toggler">
+                                <span></span>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+    <div class="full_bg">
+        <!-- header inner -->
+        <div class="section">
+            <!-- carousel code -->
+            <div id="banner1" class="carousel slide slider_main">
+                <ol class="carousel-indicators ">
+                    <li data-target="#banner1" data-slide-to="0" class="indicator-li-1">01</li>
+                    <li data-target="#banner1" data-slide-to="1" class="">02</li>
+                    <li data-target="#banner1" data-slide-to="2" class="active">03</li>
+                </ol>
+                <div class="carousel-inner">
+                    <!-- first slide -->
+                    <div class="carousel-item active">
+                        <div class="carousel-caption cuplle">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="photog">
+                                            <h1>DIACO<br>SITIO OFICIAL</h1>
+                                            <h2 style="color: white;">@TempData["Mensaje"]</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end banner -->
+    <!--  footer -->
+    <footer>
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="hedingh3 text_align_left">
+                            <h3>Proyecto de Examen Privado</h3>
+                            <ul class="menu_footer">
+                                <li><a href="index.html">&#193;rea de An&#225;lisis, Dise&#241;o y Desarrollo</a>
+                                <li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <p>Desarrollado por Michelle Champney</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- Javascript files-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            @*var mensaje = '@Html.Raw(ViewBag.Mensaje)';
+            if (mensaje != "")*@
+            alert('INICIO');
+            Confirmar('hola', 2000);
+        });
+    </script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/sweetalert2.min.js"></script>
+    <script src="~/js/maincustom.js"></script>
+    <script src="~/js/propios.js"></script>
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+
+</body>
+</html>

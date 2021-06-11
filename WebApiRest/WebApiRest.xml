@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApiRest</name>
+    </assembly>
+    <members>
+        <member name="M:WebApiRest.Controllers.RegionController.GetAll">
+            <summary>
+            Trae un listado de las regiones registradas
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiRest.Controllers.RegionController.Get(System.Int32)">
+            <summary>
+            Trae los datos de una region en especifica
+            </summary>
+            <param name="id">Id de la region</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiRest.Controllers.RegionController.Post(Entities.eCatalogo)">
+            <summary>
+            Guarda una region
+            </summary>
+            <param name="obj">Objeto con los datos de la region</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiRest.Controllers.RegionController.Put(System.Int32,Entities.eCatalogo)">
+            <summary>
+            Actualiza los datos de una region en especifico
+            </summary>
+            <param name="id">Id de la region</param>
+            <param name="obj">Objeto con los datos de la region</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiRest.Controllers.RegionController.Delete(System.Int32)">
+            <summary>
+            Borra una region en especifico
+            </summary>
+            <param name="id">Id de la region</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

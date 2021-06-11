@@ -1,0 +1,70 @@
+﻿@model Entities.eQuejaVistaCompleta
+
+<form role="form">
+    <div class="form-group">
+        <label>Comercio</label>
+        <input asp-for="Obj.NombreComercio" class="form-control" placeholder="Comercio" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.NombreComercio" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Sucursal</label>
+        <input asp-for="Obj.NombreSucursal" class="form-control" placeholder="Sucursal" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.NombreSucursal" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Tipo de Queja</label>
+        <input asp-for="Obj.NombreTipoQueja" class="form-control" placeholder="Tipo" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.NombreTipoQueja" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Fecha de Ingreso</label>
+        <input asp-for="Obj.FechaIngreso" class="form-control" placeholder="Fecha" type="datetime" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.FechaIngreso" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Estado de Queja</label>
+        <input asp-for="Obj.NombreEstadoQueja" class="form-control" placeholder="Estado" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.NombreEstadoQueja" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>T&#237;tulo</label>
+        <input asp-for="Obj.Titulo" class="form-control" placeholder="Titulo" autocomplete="off" readonly />
+        <span asp-validation-message="" asp-validation-for="Obj.Titulo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Queja</label>
+        <textarea asp-for="Obj.Queja" class="form-control" placeholder="Queja" rows="6" readonly></textarea>
+        <span asp-validation-message="" asp-validation-for="Obj.Queja" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Petici&#243;n</label>
+        <textarea asp-for="Obj.Peticion" class="form-control" placeholder="Peticion" rows="6" readonly></textarea>
+        <span asp-validation-message="" asp-validation-for="Obj.Peticion" class="text-danger"></span>
+    </div>
+</form>
+
+<table id="DataTable" style="overflow-x: scroll;" class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>Estado</th>
+            <th>Fecha de Ingreso</th>
+            <th>Comentario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListObjSeguimiento)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreEstado)
+                </td>
+                <td>
+                    @item.FechaIngreso.ToString("dd/MMM/yyyy HH:mm")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comentario)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

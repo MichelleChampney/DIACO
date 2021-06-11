@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Entities.eComercioSucursalVista>
+
+@{
+    ViewData["Title"] = "Comercios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Sucursales</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Listado de Sucursales</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Sucursales
+                <ul class="pull-right panel-settings panel-button-tab-right">
+                    <li class="dropdown">
+                        <a asp-action="Create" asp-route-idComercio="@ViewBag.IdComercio" class="pull-right">
+                            <em class="fa fa-plus"></em>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-action="Index" asp-controller="Comercios" class="pull-right">
+                            <em class="fa fa-arrow-left"></em>
+                        </a>
+                    </li>
+                </ul>
+                <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    @if (string.IsNullOrEmpty(ViewBag.Error) == false)
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> @ViewBag.Error </div>
+                    }
+                    <div class="form-group">
+                        <label>Comercio</label>
+                        <input value="@ViewBag.Comercio" class="form-control" readonly />
+                    </div>
+                    <table id="DataTable" class="table table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th>Regi&#243;n</th>
+                                <th>Departamento</th>
+                                <th>Municipio</th>
+                                <th>Ubicaci&#243;n</th>
+                                <th>Nombre</th>
+                                <th>Direcci&#243;n</th>
+                                <th>Central</th>
+                                <th>Tel&#233;fono</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreRegion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreDepartamento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreMunicipio)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreUbicacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Direccion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Central)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Telefono)
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("Edit","ComercioSucursales",new { id = item.Id })" })>Editar</a>
+                                    <button class="btn btn-sm btn-danger" onclick="ValidarEliminar('@Url.Action("Delete","ComercioSucursales",new { id = item.Id })');">Eliminar</button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var confirmacion = '@Html.Raw(ViewBag.Confirmacion)';
+            if (confirmacion != null && confirmacion != "")
+                Confirmar(confirmacion);
+            $('#DataTable').DataTable();
+        });
+    </script>
+}

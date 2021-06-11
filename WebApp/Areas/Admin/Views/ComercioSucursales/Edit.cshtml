@@ -1,0 +1,148 @@
+﻿@model WebApp.Areas.Admin.Models.mComercioSucursal
+
+@{
+    ViewData["Title"] = "Sucursales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Sucursales</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Edici&#243;n de Sucursales</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos Generales</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form role="form" asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                        <input asp-for="Obj.Id" class="form-control" placeholder="Id" type="hidden" />
+                        <input asp-for="Obj.IdComercio" class="form-control" placeholder="IdComercio" type="hidden" />
+                        <input asp-for="Obj.NombreComercio" class="form-control" placeholder="Nombre Comercio" type="hidden" />
+                        <div class="form-group">
+                            <label>Regi&#243;n</label>
+                            <select asp-for="Obj.IdRegion" class="form-control" asp-items="Model.ListaRegion" id="ddlRegion"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdRegion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Departamento</label>
+                            <select asp-for="Obj.IdDepartamento" class="form-control" asp-items="Model.ListaDepartamento" id="ddlDepartamento"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdDepartamento" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Municipio</label>
+                            <select asp-for="Obj.IdMunicipio" class="form-control" asp-items="Model.ListaMunicipio" id="ddlMunicipio"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdMunicipio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Ubicaci&#243;n</label>
+                            <select asp-for="Obj.IdUbicacion" class="form-control" asp-items="Model.ListaUbicacion" id="ddlUbicacion"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdUbicacion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input asp-for="Obj.Nombre" class="form-control" placeholder="Nombre" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Direcci&#243;n</label>
+                            <input asp-for="Obj.Direccion" class="form-control" placeholder="Dirección" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Direccion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group checkbox">
+                            <label>
+                                <input asp-for="Obj.Central" type="checkbox" />Central
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Tel&#233;fono</label>
+                            <input asp-for="Obj.Telefono" class="form-control" placeholder="Teléfono" autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Telefono" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-default">Limpiar</button>
+                        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddlRegion').change(function () {
+                if ($('#ddlRegion').val() != "Select") {
+                    $('#ddlDepartamento').empty();
+                    $('#ddlMunicipio').empty();
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var url = '@Url.Action("GetAllValueList","Departamentos")' + "?idRegion=" + idRegion + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlDepartamento").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlDepartamento').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los departamentos.");
+                        });
+                }
+            });
+            $('#ddlDepartamento').change(function () {
+                if ($('#ddlDepartamento').val() != "Select") {
+                    $('#ddlMunicipio').empty();
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var idDepartamento = $('#ddlDepartamento').val();
+                    var url = '@Url.Action("GetAllValueList","Municipios")' + "?idRegion=" + idRegion + "&idDepartamento=" + idDepartamento + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlMunicipio").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlMunicipio').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los municipios.");
+                        });
+                }
+            });
+            $('#ddlMunicipio').change(function () {
+                if ($('#ddlDepartamento').val() != "Select") {
+                    $('#ddlUbicacion').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var idDepartamento = $('#ddlDepartamento').val();
+                    var idMunicipio = $('#ddlMunicipio').val();
+                    var url = '@Url.Action("GetAllValueList","Ubicaciones")' + "?idRegion=" + idRegion + "&idDepartamento=" + idDepartamento + "&idMunicipio=" + idMunicipio + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlUbicacion").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlUbicacion').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar las ubicaciones.");
+                        });
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

@@ -1,0 +1,75 @@
+﻿@model WebApp.Areas.Admin.Models.mUsuarioCreacion
+
+@{
+    ViewData["Title"] = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Usuarios</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Creaci&#243;n de Usuarios</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos Generales</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form role="form" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input asp-for="Obj.Nombre" class="form-control" placeholder="Nombre" autofocus autocomplete="off" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Usuario</label>
+                            <input asp-for="Obj.Usuario" class="form-control" placeholder="Usuario" autocomplete="off" type="email" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Usuario" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Clave</label>
+                            <input asp-for="Obj.Clave" class="form-control" placeholder="Clave" autocomplete="off" type="password" />
+                            <span asp-validation-message="" asp-validation-for="Obj.Clave" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmaci&#243;n de Clave</label>
+                            <input asp-for="Obj.ConfirmacionClave" class="form-control" placeholder="Confirmar Clave" autocomplete="off" type="password" />
+                            <span asp-validation-message="" asp-validation-for="Obj.ConfirmacionClave" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Rol</label>
+                            <select asp-for="Obj.IdRol" class="form-control" asp-items="Model.ListaRol"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdRol" class="text-danger"></span>
+                        </div>
+                        <div class="form-group checkbox">
+                            <label>
+                                <input asp-for="Obj.Activo" type="checkbox" checked />Activo
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-default">Limpiar</button>
+                        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

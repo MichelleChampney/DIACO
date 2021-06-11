@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Ubicaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Cat&#225;logos / Ubicaciones</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Listado de Ubicaciones</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Ubicaciones
+                <ul class="pull-right panel-settings panel-button-tab-right">
+                    <li class="dropdown">
+                        <a onclick="ValidarCreacion();" class="pull-right">
+                            <em class="fa fa-plus"></em>
+                        </a>
+                    </li>
+                </ul>
+                <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label>Regi&#243;n</label>
+                        <select asp-items="ViewBag.ListaRegion" class="form-control" id="ddlRegion"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Departamento</label>
+                        <select asp-items="ViewBag.ListaDepartamento" class="form-control" id="ddlDepartamento"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Municipio</label>
+                        <select asp-items="ViewBag.ListaMunicipio" class="form-control" id="ddlMunicipio"></select>
+                    </div>
+
+                    @if (string.IsNullOrEmpty(ViewBag.Error) == false)
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> @ViewBag.Error </div>
+                    }
+
+                    <div id="dData"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var confirmacion = '@Html.Raw(ViewBag.Confirmacion)';
+            if (confirmacion != null && confirmacion != "")
+                Confirmar(confirmacion);
+            $('#DataTable').DataTable();
+            $('#ddlRegion').change(function () {
+                if ($('#ddlRegion').val() != "Select") {
+                    $('#ddlDepartamento').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var url = '@Url.Action("GetAllValueList","Departamentos")' + "?idRegion=" + idRegion + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlDepartamento").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlDepartamento').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los departamentos.");
+                        });
+                }
+            });
+            $('#ddlDepartamento').change(function () {
+                if ($('#ddlDepartamento').val() != "Select") {
+                    $('#ddlMunicipio').empty();
+                    var idRegion = $('#ddlRegion').val();
+                    var idDepartamento = $('#ddlDepartamento').val();
+                    var url = '@Url.Action("GetAllValueList","Municipios")' + "?idRegion=" + idRegion + "&idDepartamento=" + idDepartamento + "&valorVacio=false";
+                    var jqxhr = $.get(url, function (data) {
+                        $.map(data, function (item) {
+                            $("#ddlMunicipio").append($("<option />").val(item.value).text(item.text));
+                        });
+                        $('#ddlMunicipio').change();
+                    })
+                        .fail(function (error) {
+                            MostrarError("Error al cargar los municipios.");
+                        });
+                }
+            });
+            $('#ddlMunicipio').change(function () {
+                if ($('#ddlMunicipio').val() != "Select") {
+                     var idRegion = $('#ddlRegion').val();
+                     var idDepartamento = $('#ddlDepartamento').val();
+                     var idMunicipio = $('#ddlMunicipio').val();
+                     var id = idRegion + '_' + idDepartamento + '_' + idMunicipio;
+                     LoadData(id, '@Url.Action("Details")' + '/');
+                }
+            });
+            $('#ddlDepartamento').change();
+        });
+        function ValidarCreacion() {
+            var idRegion = $('#ddlRegion').val();
+            var idDepartamento = $('#ddlDepartamento').val();
+            var idMunicipio = $('#ddlMunicipio').val();
+            if (idRegion == null)
+                MostrarError('Debe crear una región primero!');
+            if (idDepartamento == null)
+                MostrarError('Debe crear un departamento primero!');
+            if (idMunicipio == null)
+                MostrarError('Debe crear un municipio primero!');
+            else {
+                var idRegion = $('#ddlRegion').val();
+                var idDepartamento = $('#ddlDepartamento').val();
+                var idMunicipio = $('#ddlMunicipio').val();
+                window.location.href = '@Url.Action("Create", "Ubicaciones")' + '?idRegion=' + idRegion + '&idDepartamento=' + idDepartamento + '&idMunicipio=' + idMunicipio;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@model WebApp.Areas.Admin.Models.mQuejaSeguimiento
+
+@{
+    ViewData["Title"] = "Seguimiento de Quejas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Quejas / Seguimientos</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Creaci&#243;n de Seguimientos</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos Generales</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form role="form" asp-action="CreateTracking">
+                        <div asp-validation-summary="ModelOnly" class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em></div>
+                        <input asp-for="Obj.IdQueja" class="form-control" placeholder="IdQueja" type="hidden" />
+                        <div class="form-group">
+                            <label>Nuevo Estado</label>
+                            <select asp-for="Obj.IdEstado" class="form-control" asp-items="Model.ListaEstado" id="ddlRegion"></select>
+                            <span asp-validation-message="" asp-validation-for="Obj.IdEstado" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Comentario</label>
+                            <textarea asp-for="Obj.Comentario" class="form-control" placeholder="Comentario"></textarea>
+                            <span asp-validation-message="" asp-validation-for="Obj.Comentario" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-default">Reestablecer Valores</button>
+                        <a asp-action="IndexPendientes" class="btn btn-default">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
+}

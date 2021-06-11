@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Entities.eQuejaVista>
+
+@if (string.IsNullOrEmpty(ViewBag.Error) == false)
+{
+    <div class="alert bg-primary" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em>@ViewBag.Error</div>
+}
+
+<div class="panel-body tabs">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#pilltab1" data-toggle="tab">Tabla</a></li>
+        <li><a href="#pilltab2" data-toggle="tab">Gr&#225;ficas</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="pilltab1">
+            <table id="DataTable" style="overflow-x: scroll;" class="table table-responsive table-striped">
+                <thead>
+                    <tr>
+                        <th>C&#243;digo</th>
+                        <th>Tipo de Queja</th>
+                        <th>T&#237;tulo</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Queja</th>
+                        <th>Petici&#243;n</th>
+                        <th>Estado</th>
+                        <th>Comercio</th>
+                        <th>Sucursal</th>
+                        <th>Central</th>
+                        <th>Ubicaci&#243;n</th>
+                        <th>Municipio</th>
+                        <th>Departamento</th>
+                        <th>Regi&#243;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Codigo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreTipoQueja)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Titulo)
+                            </td>
+                            <td>
+                                @item.FechaIngreso.ToString("dd/MMM/yyyy HH:mm")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Queja)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Peticion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreEstadoQueja)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreComercio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreSucursal)
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => item.Central, new { @onclick = "return false;" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreUbicacion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreMunicipio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreDepartamento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreRegion)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="pilltab2">
+            <div id="chartdiv" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+</div>
